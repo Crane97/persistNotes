@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class NoteService {
@@ -21,6 +23,7 @@ public class NoteService {
     }
 
     public Note createNote(Note note){
+
         return noteRepository.save(note);
     }
 
@@ -74,14 +77,11 @@ public class NoteService {
         List<Note> completedNotes = new ArrayList<>();
 
         for(Note note : notes){
-
             if(note.getCompletitionDate() != null){
                 continue;
             }
-
             completedNotes.add(note);
         }
-
         return completedNotes;
     }
 
@@ -117,12 +117,26 @@ public class NoteService {
         return noteRepository.findByMentionContaining(people);
     }
 
+    public void setTypeLink(String link, Note note){
 
+        Pattern patternEmail = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher matchEmail = patternEmail.matcher(link);
 
-
-
-
-
-
-
+        //Setting email
+        if(matchEmail.matches()){
+            note.setLinkType("EMAIL");
+            return;
+        }
+        if(link.matches("(.*)youtube.com/watch?(.*)")){
+            note.setLinkType("YOUTUBE");
+            return;
+        }
+        if(link.matches("(.*).com(.*)")){
+            note.setLinkType("WEBPAGE");
+            return;
+        }
+        if(link.matches("(.*).pdf")){
+            note.setLinkType("PDF");
+        }
+    }
 }
