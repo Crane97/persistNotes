@@ -113,10 +113,10 @@ public class NoteService {
         for(String name: parts){
 
             if(name.contains("@")){
-                links.concat("https://twitter.com/" + name.substring(1) + ",");
+                links = links.concat("https://twitter.com/" + name.substring(1) + ",");
             }
             else{
-                links.concat("-,");
+                links = links.concat("-,");
             }
         }
 
