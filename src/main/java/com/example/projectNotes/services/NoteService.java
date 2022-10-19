@@ -19,7 +19,8 @@ public class NoteService {
 
     public Note getNote(Long id){
 
-        return noteRepository.findById(id).get();
+        return noteRepository.findById(id).orElse(null);
+
     }
 
     public Note createNote(Note note){
@@ -73,7 +74,7 @@ public class NoteService {
     }
 
     public boolean comparedEstimatedDateAndCreationDate(LocalDate estimatedDate, LocalDate creationDate){
-        //Must be true, estimatedDate must be later than creationDate
+
         return creationDate.isBefore(estimatedDate);
     }
 
