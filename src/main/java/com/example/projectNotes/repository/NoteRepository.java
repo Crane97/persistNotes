@@ -10,4 +10,6 @@ import java.util.List;
 public interface NoteRepository extends JpaRepository<Note, Long> {
 
     List<Note> findByDescriptionContaining(String description);
+    List<Note> findByMentionContaining(String description);
+
 }

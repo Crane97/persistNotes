@@ -36,7 +36,13 @@ public class Note {
     private String link;
 
     @Column
+    private String linkType;
+
+    @Column
     private String mentions;
+
+    @Column
+    private String profile;
 
     @Column
     private int priority;

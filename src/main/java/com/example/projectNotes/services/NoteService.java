@@ -95,6 +95,28 @@ public class NoteService {
     }
 
 
+    public String getProfileLink(String mentions){
+
+        String[] parts = mentions.split(",");
+        String links = "";
+
+        for(String name: parts){
+
+            if(name.contains("@")){
+                links.concat("https://twitter.com/" + name.substring(1) + ",");
+            }
+            else{
+                links.concat("-,");
+            }
+        }
+
+        return links.substring(0, links.length() - 1);
+    }
+
+    public List<Note> searchNoteForPeople(Note note, String people){
+        return noteRepository.findByMentionContaining(people);
+    }
+
 
 
 
