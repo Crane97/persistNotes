@@ -24,6 +24,13 @@ public class NoteService {
 
     public Note createNote(Note note){
 
+        if(!comparedEstimatedDateAndCreationDate(note.getEstimatedDate(), note.getCreationDate())){
+            return new Note();
+        }
+
+        note = setTypeLink(note.getLink(), note);
+        note.setProfile(getProfileLink(note.getMentions()));
+
         return noteRepository.save(note);
     }
 
@@ -113,11 +120,11 @@ public class NoteService {
         return links.substring(0, links.length() - 1);
     }
 
-    public List<Note> searchNoteForPeople(Note note, String people){
+    public List<Note> searchNoteByPeople(Note note, String people){
         return noteRepository.findByMentionContaining(people);
     }
 
-    public void setTypeLink(String link, Note note){
+    public Note setTypeLink(String link, Note note){
 
         Pattern patternEmail = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
         Matcher matchEmail = patternEmail.matcher(link);
@@ -125,18 +132,21 @@ public class NoteService {
         //Setting email
         if(matchEmail.matches()){
             note.setLinkType("EMAIL");
-            return;
+            return note;
         }
         if(link.matches("(.*)youtube.com/watch?(.*)")){
             note.setLinkType("YOUTUBE");
-            return;
+            return note;
         }
         if(link.matches("(.*).com(.*)")){
             note.setLinkType("WEBPAGE");
-            return;
+            return note;
         }
         if(link.matches("(.*).pdf")){
             note.setLinkType("PDF");
+            return note;
         }
+
+        return note;
     }
 }
