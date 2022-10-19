@@ -55,5 +55,22 @@ public class NoteService {
         return completedNotes;
     }
 
+    public Note updatePriority(Note note, int priority){
+        note.setPriority(priority);
+        return updateNote(note);
+    }
+
+    public List<Note> searchTask(String description){
+        return noteRepository.findByDescriptionContaining(description);
+    }
+
+
+
+
+
+
+
+
+
 
 }
