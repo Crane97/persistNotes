@@ -32,6 +32,36 @@ public class NoteService {
         noteRepository.delete(getNote(id));
     }
 
+    public List<Note> getCurrentNote(){
+        LocalDate currentDate = LocalDate.now();
+
+        List<Note> allNotes = noteRepository.findAll();
+        List<Note> result = new ArrayList<>();
+
+        for(Note no : allNotes){
+            if(no.getCompletitionDate() == null){
+                result.add(no);
+            }
+        }
+
+        return result;
+    }
+
+    public List<Note> getFutureNotes(){
+        LocalDate currentDate = LocalDate.now();
+
+        List<Note> allNotes = noteRepository.findAll();
+        List<Note> result = new ArrayList<>();
+
+        for(Note no : allNotes){
+            if(no.getEstimatedDate().isAfter(currentDate)){
+                result.add(no);
+            }
+        }
+
+        return result;
+    }
+
     public boolean comparedEstimatedDateAndCreationDate(LocalDate estimatedDate, LocalDate creationDate){
         //Must be true, estimatedDate must be later than creationDate
         return creationDate.isBefore(estimatedDate);
