@@ -41,4 +41,5 @@ public class Note {
     @Column
     private int priority;
 
+
 }

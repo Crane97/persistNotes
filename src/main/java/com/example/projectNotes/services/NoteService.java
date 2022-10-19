@@ -5,6 +5,10 @@ import com.example.projectNotes.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class NoteService {
 
@@ -27,4 +31,29 @@ public class NoteService {
     public void deleteNote(Long id){
         noteRepository.delete(getNote(id));
     }
+
+    public boolean comparedEstimatedDateAndCreationDate(LocalDate estimatedDate, LocalDate creationDate){
+        //Must be true, estimatedDate must be later than creationDate
+        return creationDate.isBefore(estimatedDate);
+    }
+
+    public List<Note> getCompletedNotes(){
+        LocalDate now = LocalDate.now();
+
+        List<Note> notes = noteRepository.findAll();
+        List<Note> completedNotes = new ArrayList<>();
+
+        for(Note note : notes){
+
+            if(note.getCompletitionDate() != null){
+                continue;
+            }
+
+            completedNotes.add(note);
+        }
+
+        return completedNotes;
+    }
+
+
 }
