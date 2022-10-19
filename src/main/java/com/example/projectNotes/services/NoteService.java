@@ -29,7 +29,7 @@ public class NoteService {
         }
 
         note = setTypeLink(note.getLink(), note);
-        note.setProfile(getProfileLink(note.getMentions()));
+        note.setProfile(getProfileLink(note.getMention()));
 
         return noteRepository.save(note);
     }
