@@ -10,12 +10,12 @@ import java.time.LocalDate;
 @Table(name = "NoteFields")
 @Getter
 @Setter
-public class NoteFields {
+public class Note {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private long id;
+    private Long id;
 
     @Column
     private String description;
