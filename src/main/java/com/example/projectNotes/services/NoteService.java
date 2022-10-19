@@ -113,8 +113,8 @@ public class NoteService {
         return links.substring(0, links.length() - 1);
     }
 
-    public List<Note> searchNoteForPeople(Note note, String people){
-        return noteRepository.findByMentionContaining(people);
+    public List<Note> searchNoteByPeople(Note note, String person){
+        return noteRepository.findByMentionContaining(person);
     }
 
 

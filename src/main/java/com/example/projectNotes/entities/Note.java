@@ -39,7 +39,7 @@ public class Note {
     private String linkType;
 
     @Column
-    private String mentions;
+    private String mention;
 
     @Column
     private String profile;
