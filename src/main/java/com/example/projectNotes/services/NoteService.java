@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class NoteService {
@@ -21,6 +23,14 @@ public class NoteService {
     }
 
     public Note createNote(Note note){
+
+        if(!comparedEstimatedDateAndCreationDate(note.getEstimatedDate(), note.getCreationDate())){
+            return new Note();
+        }
+
+        note = setTypeLink(note.getLink(), note);
+        note.setProfile(getProfileLink(note.getMentions()));
+
         return noteRepository.save(note);
     }
 
@@ -113,16 +123,33 @@ public class NoteService {
         return links.substring(0, links.length() - 1);
     }
 
-    public List<Note> searchNoteByPeople(Note note, String person){
-        return noteRepository.findByMentionContaining(person);
+    public List<Note> searchNoteByPeople(Note note, String people){
+        return noteRepository.findByMentionContaining(people);
     }
 
+    public Note setTypeLink(String link, Note note){
 
+        Pattern patternEmail = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher matchEmail = patternEmail.matcher(link);
 
+        //Setting email
+        if(matchEmail.matches()){
+            note.setLinkType("EMAIL");
+            return note;
+        }
+        if(link.matches("(.*)youtube.com/watch?(.*)")){
+            note.setLinkType("YOUTUBE");
+            return note;
+        }
+        if(link.matches("(.*).com(.*)")){
+            note.setLinkType("WEBPAGE");
+            return note;
+        }
+        if(link.matches("(.*).pdf")){
+            note.setLinkType("PDF");
+            return note;
+        }
 
-
-
-
-
-
+        return note;
+    }
 }
